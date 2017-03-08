@@ -423,14 +423,13 @@ public class MainMenuActivity extends Activity {
     private void createErrorDialog(String errorMsg, final boolean shouldExit) {
         Collect.getInstance().getActivityLogger()
                 .logAction(this, "createErrorDialog", "show");
-        mAlertDialog = new AlertDialog.Builder(this).create();
-        mAlertDialog.setIcon(android.R.drawable.ic_dialog_info);
-        mAlertDialog.setMessage(errorMsg);
-        DialogInterface.OnClickListener errorListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i) {
-                switch (i) {
-                    case DialogInterface.BUTTON_POSITIVE:
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setIcon(android.R.drawable.ic_dialog_info)
+                .setMessage(errorMsg)
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
                         Collect.getInstance()
                                 .getActivityLogger()
                                 .logAction(this, "createErrorDialog",
@@ -438,12 +437,9 @@ public class MainMenuActivity extends Activity {
                         if (shouldExit) {
                             finish();
                         }
-                        break;
-                }
-            }
-        };
-        mAlertDialog.setCancelable(false);
-        mAlertDialog.setButton(getString(R.string.ok), errorListener);
+                    }
+                });
+        mAlertDialog = new AlertDialog.Builder(this).create();
         mAlertDialog.show();
     }
 
